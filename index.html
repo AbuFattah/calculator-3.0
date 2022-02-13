@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="cal-body">
+      <div class="cal-container">
+        <div class="cal-display">
+          <div class="inner-display display-top"></div>
+          <div class="inner-display display-bottom"></div>
+        </div>
+        <button data-operator class="keypad">%</button>
+        <button data-clear-event class="keypad">CE</button>
+        <button data-clear class="keypad">C</button>
+        <button data-delete class="keypad">DEL</button>
+        <button data-operator class="keypad keypad--complex">1/x</button>
+        <button data-operator class="keypad keypad--complex">x^2</button>
+        <button data-operator class="keypad keypad--complex">x^1/2</button>
+        <button data-operator class="keypad">/</button>
+        <button data-number class="keypad">7</button>
+        <button data-number class="keypad">8</button>
+        <button data-number class="keypad">9</button>
+        <button data-operator class="keypad">*</button>
+        <button data-number class="keypad">4</button>
+        <button data-number class="keypad">5</button>
+        <button data-number class="keypad">6</button>
+        <button data-operator class="keypad">-</button>
+        <button data-number class="keypad">1</button>
+        <button data-number class="keypad">2</button>
+        <button data-number class="keypad">3</button>
+        <button data-operator class="keypad">+</button>
+        <button data-operator class="keypad keypad--complex">+/-</button>
+        <button data-number class="keypad">0</button>
+        <button data-number class="keypad">.</button>
+        <button data-equals class="keypad">=</button>
+      </div>
+    </div>
+    <div class="history-box">
+      <ul class="history-nav">
+        <li><a class="nav-link" href="#">History</a></li>
+        <!-- <li><a href="#">Memory</a></li> -->
+      </ul>
+      <div class="history-container">
+        <div class="history-items">
+          <div class="history__item">sdf</div>
+          <div class="history__item">sdf</div>
+          <div class="history__item">sdf</div>
+          <div class="history__item">sdf</div>
+        </div>
+        <div class="delete-controls">
+          <button class="delete-btn"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script src="./app.js"></script>
+</body>
+
+</html>

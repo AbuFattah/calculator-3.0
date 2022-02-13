@@ -118,7 +118,7 @@ Calculator.prototype = {
     if (this.isEqualsBtnClicked) {
       this.displayPreviousCalculation = `${this.previousOperand} ${this.normalOperator} ${this.currentOperand} =`;
     }
-    this.currentOperand = result;
+    this.currentOperand = result.toString();
     this.normalOperator = null;
     this.previousOperand = "";
   },

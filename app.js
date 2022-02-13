@@ -4,7 +4,7 @@ function Calculator(topDisplayElement, bottomDisplayElement) {
   this.previousOperand = "";
   this.currentOperand = "";
   this.normalOperator = null;
-  this.powerOfXOperator = null;
+  this.singleOperandOperator = null;
   this.displayPreviousCalculation = "";
   this.isEqualsBtnClicked = false;
   this.isPowerOfXOperationBtnClicked = false;
@@ -41,55 +41,53 @@ Calculator.prototype = {
     this.normalOperator = operator;
     this.currentOperand = "";
   },
-  choosePowerOfXOperation(operator) {
+  chooseSingleOperandOperation(operator) {
     if (this.currentOperand == "") return;
-    this.powerOfXOperator = operator;
-    this.computePowerOfX();
+    this.singleOperandOperator = operator;
+    this.computeSinglOperand();
     // this.normalOperator = null;
   },
-  computePowerOfX() {
+  computeSinglOperand() {
     let result;
     let current = parseFloat(this.currentOperand);
     if (isNaN(current)) return;
     let previous = parseFloat(this.previousOperand);
-    switch (this.powerOfXOperator) {
+    switch (this.singleOperandOperator) {
       case "1/x": {
         result = 1 / current;
+        this.displayPreviousCalculation = `1/(${current})`;
         if (previous) {
           result = eval(`${previous} ${this.normalOperator} ${result}`);
+          this.displayPreviousCalculation = `${previous} ${this.normalOperator} 1/(${current}) =`;
         }
         break;
       }
       case "x^2": {
         result = current ** 2;
+        this.displayPreviousCalculation = `sqr(${current})`;
         if (previous) {
           result = eval(`${previous} ${this.normalOperator} ${result}`);
+          this.displayPreviousCalculation = `${previous} ${this.normalOperator} sqr(${current}) =`;
         }
         break;
       }
       case "x^1/2": {
         result = Math.sqrt(current);
+        this.displayPreviousCalculation = `sqrt(${current})`;
         if (previous) {
           result = eval(`${previous} ${this.normalOperator} ${result}`);
+          this.displayPreviousCalculation = `${previous} ${this.normalOperator} sqrt(${current}) =`;
         }
-        console.log(result);
         break;
       }
       default: {
         return;
       }
     }
-    if (this.powerOfXOperator == "x^2") {
-      this.displayPreviousCalculation = `sqr(${current})`;
-    } else if (this.powerOfXOperator == "1/x") {
-      // inversing result for display
-      this.displayPreviousCalculation = `1/(${current})`;
-    } else if (this.powerOfXOperator == "x^1/2") {
-      this.displayPreviousCalculation = `sqrt(${current})`;
-    }
     this.currentOperand = result.toString();
     this.previousOperand = "";
-    this.powerOfXOperator = null;
+    this.singleOperandOperator = null;
+    this.normalOperator = null;
   },
   compute() {
     if (this.previousOperand == "" || this.currentOperand == "") return;
@@ -141,8 +139,8 @@ Calculator.prototype = {
 const numberBtns = document.querySelectorAll("[data-number]");
 const operationBtns = document.querySelectorAll("[data-operator]");
 
-const powerOfXOperationBtns = document.querySelectorAll(
-  "[data-operator-power-of-x]"
+const singleOperandOperationBtns = document.querySelectorAll(
+  "[data-operator-single-operand]"
 );
 const deleteBtn = document.querySelector("[data-delete]");
 const clearBtn = document.querySelector("[data-clear]");
@@ -165,10 +163,11 @@ operationBtns.forEach((btn) => {
     calculator.updateDisplay();
   });
 });
-powerOfXOperationBtns.forEach((btn) => {
+singleOperandOperationBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
+    console.log("hell");
     calculator.isPowerOfXOperationBtnClicked = true;
-    calculator.choosePowerOfXOperation(btn.innerText);
+    calculator.chooseSingleOperandOperation(btn.innerText);
     // calculator.computePowerOfX();
     calculator.updateDisplay();
     calculator.isPowerOfXOperationBtnClicked = false;

@@ -66,7 +66,6 @@ Calculator.prototype = {
     ) {
       this.historyItemsElement.style.scrollbarWidth = "thin";
       this.historyItemsElement.style.overflowY = "scroll";
-      console.log("hello");
     }
   },
   computeSinglOperand() {
@@ -225,7 +224,6 @@ operationBtns.forEach((btn) => {
 });
 singleOperandOperationBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    console.log("hell");
     calculator.isPowerOfXOperationBtnClicked = true;
     calculator.chooseSingleOperandOperation(btn.innerText);
     // calculator.computePowerOfX();

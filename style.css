@@ -216,7 +216,7 @@ a.nav-link:hover::after {
 .delete-controls {
   text-align: end;
 }
-.delete-btn {
+.delete-history-btn {
   text-align: end;
   margin: 10px;
   border: 0;
@@ -226,9 +226,9 @@ a.nav-link:hover::after {
   padding: 10px 10px;
   background-color: transparent;
 }
-.delete-btn:hover {
+.delete-history-btn:hover {
   background-color: #38303f;
 }
-.delete-btn:active {
+.delete-history-btn:active {
   background-color: #342d3a;
 }

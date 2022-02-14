@@ -202,6 +202,7 @@ const topDisplayElement = document.querySelector(".display-top");
 const bottomDisplayElement = document.querySelector(".display-bottom");
 const equalsBtn = document.querySelector("[data-equals]");
 const historyItemsElement = document.querySelector(".history-items");
+const deleteHistoryBtn = document.querySelector(".delete-history-btn");
 
 const calculator = new Calculator(
   topDisplayElement,
@@ -264,8 +265,9 @@ historyItemsElement.addEventListener("click", (e) => {
   // console.log(e.target);
 });
 
-deleteBtn.addEventListener("click", (e) => {
-  historyItemsElement.innerHTML = "";
-
-  console.log("dfdf");
+deleteHistoryBtn.addEventListener("click", (e) => {
+  // historyItemsElement.innerHTML = "";
+  while (historyItemsElement.lastElementChild) {
+    historyItemsElement.lastElementChild.remove();
+  }
 });

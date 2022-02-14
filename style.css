@@ -187,8 +187,7 @@ a.nav-link:hover::after {
 
 ::-webkit-scrollbar-thumb {
   background: #545454;
-  -webkit-border-radius: 1ex;
-  -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+  border-radius: 1ex;
 }
 
 ::-webkit-scrollbar-corner {
@@ -198,6 +197,7 @@ a.nav-link:hover::after {
 /* .history-items::scrollba */
 
 .history__item {
+  text-align: end;
   font-size: 1rem;
   /* margin: 10px 10px; */
   padding: 10px;

@@ -55,9 +55,9 @@ Calculator.prototype = {
     const historyItem = document.createElement("div");
     historyItem.className = "history__item";
     if (expressionObj.expression.includes("=")) {
-      historyItem.innerText = `${expressionObj.expression} ${expressionObj.result}`;
+      historyItem.innerText = `${expressionObj.expression}\n ${expressionObj.result}`;
     } else {
-      historyItem.innerText = `${expressionObj.expression} = ${expressionObj.result}`;
+      historyItem.innerText = `${expressionObj.expression} =\n ${expressionObj.result}`;
     }
     this.historyItemsElement.appendChild(historyItem);
     if (

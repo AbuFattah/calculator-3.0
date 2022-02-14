@@ -1,14 +1,14 @@
-function Calculator(topDisplayElement, bottomDisplayElement) {
+function Calculator(
+  topDisplayElement,
+  bottomDisplayElement,
+  historyItemsElement
+) {
   this.topDisplayElement = topDisplayElement;
   this.bottomDisplayElement = bottomDisplayElement;
-  this.previousOperand = "";
-  this.currentOperand = "";
-  this.normalOperator = null;
-  this.singleOperandOperator = null;
-  this.displayPreviousCalculation = "";
-  this.isEqualsBtnClicked = false;
-  this.isPowerOfXOperationBtnClicked = false;
-
+  this.historyItemsElement = historyItemsElement;
+  this.clear();
+  // this.isEqualsBtnClicked = false;
+  // this.isPowerOfXOperationBtnClicked = false;
   this.previousCalculations = [];
   this.powerOfXOperation = new Set(["1/x", "x^2", "x^1/2"]);
 }
@@ -25,9 +25,13 @@ Calculator.prototype = {
     } else if (this.normalOperator == null) {
       this.topDisplayElement.innerText = "";
     } else {
-      this.topDisplayElement.innerText = `${this.previousOperand} ${this.normalOperator}`;
+      this.topDisplayElement.innerText = `${this.displayNumber(
+        this.previousOperand
+      )} ${this.normalOperator}`;
     }
-    this.bottomDisplayElement.innerText = this.currentOperand;
+    this.bottomDisplayElement.innerText = this.displayNumber(
+      this.currentOperand
+    );
   },
   chooseOperation: function (operator) {
     if (this.currentOperand == "") {
@@ -47,6 +51,24 @@ Calculator.prototype = {
     this.computeSinglOperand();
     // this.normalOperator = null;
   },
+  addExpressionToHistory(expressionObj) {
+    const historyItem = document.createElement("div");
+    historyItem.className = "history__item";
+    if (expressionObj.expression.includes("=")) {
+      historyItem.innerText = `${expressionObj.expression} ${expressionObj.result}`;
+    } else {
+      historyItem.innerText = `${expressionObj.expression} = ${expressionObj.result}`;
+    }
+    this.historyItemsElement.appendChild(historyItem);
+    if (
+      this.historyItemsElement.clientHeight >
+      this.historyItemsElement.parentElement.clientHeight / 1.3
+    ) {
+      this.historyItemsElement.style.scrollbarWidth = "thin";
+      this.historyItemsElement.style.overflowY = "scroll";
+      console.log("hello");
+    }
+  },
   computeSinglOperand() {
     let result;
     let current = parseFloat(this.currentOperand);
@@ -55,16 +77,25 @@ Calculator.prototype = {
     switch (this.singleOperandOperator) {
       case "1/x": {
         result = 1 / current;
-        this.displayPreviousCalculation = `1/(${current})`;
+        this.displayPreviousCalculation = `1/${current} =`;
         if (previous) {
           result = eval(`${previous} ${this.normalOperator} ${result}`);
-          this.displayPreviousCalculation = `${previous} ${this.normalOperator} 1/(${current}) =`;
+          this.displayPreviousCalculation = `${previous} ${this.normalOperator} 1/${current} =`;
+        }
+        break;
+      }
+      case "%": {
+        result = current / 100;
+        this.displayPreviousCalculation = `${current}% =`;
+        if (previous) {
+          result = eval(`${previous} ${this.normalOperator} ${result}`);
+          this.displayPreviousCalculation = `${previous} ${this.normalOperator} ${current}% =`;
         }
         break;
       }
       case "x^2": {
         result = current ** 2;
-        this.displayPreviousCalculation = `sqr(${current})`;
+        this.displayPreviousCalculation = `sqr(${current}) =`;
         if (previous) {
           result = eval(`${previous} ${this.normalOperator} ${result}`);
           this.displayPreviousCalculation = `${previous} ${this.normalOperator} sqr(${current}) =`;
@@ -73,7 +104,7 @@ Calculator.prototype = {
       }
       case "x^1/2": {
         result = Math.sqrt(current);
-        this.displayPreviousCalculation = `sqrt(${current})`;
+        this.displayPreviousCalculation = `sqrt(${current}) =`;
         if (previous) {
           result = eval(`${previous} ${this.normalOperator} ${result}`);
           this.displayPreviousCalculation = `${previous} ${this.normalOperator} sqrt(${current}) =`;
@@ -88,6 +119,18 @@ Calculator.prototype = {
     this.previousOperand = "";
     this.singleOperandOperator = null;
     this.normalOperator = null;
+    this.addExpressionToHistory({
+      expression: this.displayPreviousCalculation,
+      result: result.toString(),
+    });
+  },
+  displayNumber(num) {
+    if (num == "") return "";
+    let integerDigitsStr = num.split(".")[0];
+    let decimalDigits = num.split(".")[1];
+    let integerDigits = parseInt(integerDigitsStr).toLocaleString("en");
+    if (decimalDigits == undefined) return integerDigits;
+    return `${integerDigits}.${decimalDigits}`;
   },
   compute() {
     if (this.previousOperand == "" || this.currentOperand == "") return;
@@ -116,7 +159,13 @@ Calculator.prototype = {
       }
     }
     if (this.isEqualsBtnClicked) {
-      this.displayPreviousCalculation = `${this.previousOperand} ${this.normalOperator} ${this.currentOperand} =`;
+      this.displayPreviousCalculation = `${this.displayNumber(
+        this.previousOperand
+      )} ${this.normalOperator} ${this.displayNumber(this.currentOperand)} =`;
+      this.addExpressionToHistory({
+        expression: this.displayPreviousCalculation,
+        result: result.toString(),
+      });
     }
     this.currentOperand = result.toString();
     this.normalOperator = null;
@@ -124,14 +173,18 @@ Calculator.prototype = {
   },
 
   clear() {
-    this.currentOperand = "";
     this.previousOperand = "";
+    this.currentOperand = "";
     this.normalOperator = null;
+    this.singleOperandOperator = null;
+    this.displayPreviousCalculation = "";
   },
   clearEvent() {
     this.currentOperand = "";
   },
-  delete() {},
+  delete() {
+    this.currentOperand = this.currentOperand.slice(0, -1);
+  },
 };
 
 //All selectors
@@ -148,8 +201,14 @@ const clearEventBtn = document.querySelector("[data-clear-event]");
 const topDisplayElement = document.querySelector(".display-top");
 const bottomDisplayElement = document.querySelector(".display-bottom");
 const equalsBtn = document.querySelector("[data-equals]");
+const historyItemsElement = document.querySelector(".history-items");
 
-const calculator = new Calculator(topDisplayElement, bottomDisplayElement);
+const calculator = new Calculator(
+  topDisplayElement,
+  bottomDisplayElement,
+  historyItemsElement
+);
+
 numberBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     calculator.appendNumber(btn.innerText);
@@ -185,8 +244,28 @@ clearBtn.addEventListener("click", (e) => {
   calculator.clear();
   calculator.updateDisplay();
 });
+deleteBtn.addEventListener("click", (e) => {
+  calculator.delete();
+  calculator.updateDisplay();
+});
 
 clearEventBtn.addEventListener("click", (e) => {
   calculator.clearEvent();
   calculator.updateDisplay();
+});
+
+historyItemsElement.addEventListener("click", (e) => {
+  let expression = e.target.innerText.split("=");
+  let leftHandSide = expression[0];
+  let rightHandSide = expression[1];
+  calculator.currentOperand = rightHandSide;
+  calculator.displayPreviousCalculation = `${leftHandSide} =`;
+  calculator.updateDisplay();
+  // console.log(e.target);
+});
+
+deleteBtn.addEventListener("click", (e) => {
+  historyItemsElement.innerHTML = "";
+
+  console.log("dfdf");
 });

@@ -224,11 +224,8 @@ operationBtns.forEach((btn) => {
 });
 singleOperandOperationBtns.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    calculator.isPowerOfXOperationBtnClicked = true;
     calculator.chooseSingleOperandOperation(btn.innerText);
-    // calculator.computePowerOfX();
     calculator.updateDisplay();
-    calculator.isPowerOfXOperationBtnClicked = false;
   });
 });
 
@@ -260,7 +257,6 @@ historyItemsElement.addEventListener("click", (e) => {
   calculator.currentOperand = rightHandSide;
   calculator.displayPreviousCalculation = `${leftHandSide} =`;
   calculator.updateDisplay();
-  // console.log(e.target);
 });
 
 deleteHistoryBtn.addEventListener("click", (e) => {

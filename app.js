@@ -34,7 +34,9 @@ Calculator.prototype = {
     );
   },
   chooseOperation: function (operator) {
-    if (this.currentOperand == "") {
+    if (this.currentOperand == "" && this.previousOperand == "") {
+      return;
+    } else if (this.previousOperand != "" && this.currentOperand == "") {
       this.normalOperator = operator;
       return;
     }
@@ -83,6 +85,15 @@ Calculator.prototype = {
         }
         break;
       }
+      case "+/-": {
+        result = current * -1;
+        this.displayPreviousCalculation = `- (${current}) =`;
+        if (previous) {
+          result = eval(`${previous} ${this.normalOperator} ${result}`);
+          this.displayPreviousCalculation = `${previous} ${this.normalOperator} - (${current}) =`;
+        }
+        break;
+      }
       case "%": {
         result = current / 100;
         this.displayPreviousCalculation = `${current}% =`;
@@ -125,6 +136,7 @@ Calculator.prototype = {
   },
   displayNumber(num) {
     if (num == "") return "";
+    if (num == "No Result") return num;
     let integerDigitsStr = num.split(".")[0];
     let decimalDigits = num.split(".")[1];
     let integerDigits = parseInt(integerDigitsStr).toLocaleString("en");
@@ -157,6 +169,7 @@ Calculator.prototype = {
         break;
       }
     }
+    if (isNaN(result)) result = "No Result";
     if (this.isEqualsBtnClicked) {
       this.displayPreviousCalculation = `${this.displayNumber(
         this.previousOperand
@@ -166,7 +179,11 @@ Calculator.prototype = {
         result: result.toString(),
       });
     }
-    this.currentOperand = result.toString();
+    if (result == "No Result") {
+      this.currentOperand = "";
+    } else {
+      this.currentOperand = result.toString();
+    }
     this.normalOperator = null;
     this.previousOperand = "";
   },

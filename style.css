@@ -13,7 +13,7 @@ body {
 .container {
   display: flex;
   /* justify-content: center; */
-  /* align-items: center; */ 
+  /* align-items: center; */
   height: 100vh;
   /* height: fit-content; */
   background-color: #a9c9ff;
@@ -182,8 +182,10 @@ a.nav-link:hover::after {
   height: auto;
   word-break: break-all;
   word-wrap: normal;
+  /* scrollbar-width is for firefox */
   scrollbar-width: none;
 }
+/* ::-webkit-scrollbar works for chrome */
 ::-webkit-scrollbar {
   width: 6px;
   background: #000;
